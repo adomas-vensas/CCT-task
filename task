@@ -1,0 +1,21 @@
+def find_maximum_distance(number_of_cities: int, cities_with_train_station: List[int]) -> int:
+    distance = [0] * number_of_cities
+    m = len(cities_with_train_station)
+    j = -1
+
+    cities_with_train_station.sort()
+
+    for i in range(number_of_cities):
+        if i - cities_with_train_station[j] >= 0:  # If station is encountered
+            reverse_distance = i - cities_with_train_station[j]
+        else:  # If station is not encountered yet
+            reverse_distance = 10 ** 5
+        if j + 1 < m:  # If there is a station ahead
+            forward_distance = cities_with_train_station[j + 1] - i
+        else:  # If there is no cities_with_train_station ahead
+            forward_distance = 10 ** 5
+        distance[i] = min(forward_distance, reverse_distance)
+        if j + 1 < m and i == cities_with_train_station[j + 1]:
+            # If city has a station, increment j to point to the next station
+            j += 1
+    return max(distance)
